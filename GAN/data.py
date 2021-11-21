@@ -27,7 +27,7 @@ def convert_data(minimum_len=10, maximum_len=30, fixed_len=216, save=False):
             vectorized_instance = np.vstack((vectorized_sentence, padding))
             instances.append(vectorized_instance)
     data = np.array(instances, dtype=int)
-    print(data.shape, data.dtype)
+    # print(data.shape, data.dtype)
     if save:
         np.save('brown_corpus.npy', data)
     return data
@@ -59,7 +59,7 @@ def ceasar_shift(clear_text, key:int, save=False):
             if cur_val > 0 or np.any(clear_text[i][j]):
                 new_val = (cur_val + key) % limit
                 crypted_data[i][j][new_val] = 1
-    print(crypted_data.shape, crypted_data.dtype)
+    # print(crypted_data.shape, crypted_data.dtype)
     if save:
         np.save('brown_corpus_ceasar_shift.npy', crypted_data)
     return crypted_data
