@@ -7,13 +7,13 @@ charset = {" ": 0, "a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6, "g": 7, "h": 
            "t": 20, "u": 21, "v": 22, "w": 23, "x": 24, "y": 25, "z": 26}
 
 
-def convert_data(minimum_len=10, maximum_len=30, fixed_len=216, save=False):
+def convert_data(minimum_len=10, maximum_len=100, fixed_len=216, save=False):
     sentences = brown.sents()
     instances = []
     max_len = 0
     for sentence in sentences:
         vectorized_sentence = np.zeros((1, len(charset.keys())))
-        if len(sentence) > minimum_len and len(sentence) <= maximum_len :
+        if minimum_len < len(sentence) <= maximum_len:
             for word in sentence:
                 vector = convert_word(word)
                 if vector is not None:
@@ -23,11 +23,12 @@ def convert_data(minimum_len=10, maximum_len=30, fixed_len=216, save=False):
             vectorized_sentence = np.delete(vectorized_sentence, (0), axis=0)
             vectorized_sentence = vectorized_sentence[:-1, :]
             cur_len = len(vectorized_sentence)
-            padding = np.zeros((fixed_len - cur_len, len(charset.keys())))
-            vectorized_instance = np.vstack((vectorized_sentence, padding))
-            instances.append(vectorized_instance)
+            if len(vectorized_sentence) >= fixed_len:
+                # padding = np.zeros((fixed_len - cur_len, len(charset.keys())))
+                # vectorized_instance = np.vstack((vectorized_sentence, padding))
+                instances.append(vectorized_sentence[:fixed_len])
     data = np.array(instances, dtype=int)
-    # print(data.shape, data.dtype)
+    print(data.shape, data.dtype)
     if save:
         np.save('brown_corpus.npy', data)
     return data
@@ -59,7 +60,7 @@ def ceasar_shift(clear_text, key:int, save=False):
             if cur_val > 0 or np.any(clear_text[i][j]):
                 new_val = (cur_val + key) % limit
                 crypted_data[i][j][new_val] = 1
-    # print(crypted_data.shape, crypted_data.dtype)
+    print(crypted_data.shape, crypted_data.dtype)
     if save:
         np.save('brown_corpus_ceasar_shift.npy', crypted_data)
     return crypted_data
@@ -70,5 +71,9 @@ def ceasar_shift(clear_text, key:int, save=False):
 if __name__ == "__main__":
     data = convert_data(save=True)
     crypted_data = ceasar_shift(data,10, True)
+    print(data[0][-1])
+    print(data[1][-1])
+    print(data[2][-1])
+    print(data[3][-1])
 
 
