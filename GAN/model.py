@@ -27,6 +27,9 @@ class GeneratorV2(nn.Module):
             nn.Conv1d(in_channels=8, out_channels=4, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm1d(4),
             nn.LeakyReLU(),
+            nn.Conv1d(in_channels=4, out_channels=1, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm1d(1),
+            nn.LeakyReLU(),
         )
 
         self.deconv_layer = nn.Sequential(
@@ -34,10 +37,24 @@ class GeneratorV2(nn.Module):
             nn.Softmax(dim=3)
         )
 
+        self.linear_layer = nn.Sequential(
+            nn.Linear(self.length,(self.length * self.dict_size)//4),
+            nn.LeakyReLU(),
+            nn.Linear((self.length * self.dict_size) // 4, (self.length * self.dict_size) // 2),
+            nn.LeakyReLU(),
+            nn.Linear((self.length * self.dict_size) // 2, self.length * self.dict_size),
+        )
+        self.final_layer = nn.Softmax(dim=3)
+
     def forward(self, X):
+        # tensor_1d = self.reduction_layer(X).view(-1, 4, self.length)
+        # new_rep = self.convultion_layer(tensor_1d).view(-1, 4, self.length, 1)
+        # return self.deconv_layer(new_rep)
+
         tensor_1d = self.reduction_layer(X).view(-1, 4, self.length)
-        new_rep = self.convultion_layer(tensor_1d).view(-1, 4, self.length, 1)
-        return self.deconv_layer(new_rep)
+        new_rep = self.convultion_layer(tensor_1d).view(-1,self.length)
+        reconstruction = self.linear_layer(new_rep).view(-1, 1, self.length, self.dict_size)
+        return self.final_layer(reconstruction)
 
 
 class DiscriminatorV2(nn.Module):
@@ -213,14 +230,15 @@ class Discriminator(nn.Module):
 
 
 if __name__ == "__main__":
-    input = torch.randint(1,27,(2,216))
-    print(input.dtype)
-    emb = nn.Embedding(27, 216)
-    print(emb(input).size())
-    # data = np.load("brown_corpus.npy")
-    # sample = torch.tensor(data[0:128])
-    # sample = sample.view(128, 1, 216, 27)
+    data = np.load("brown_corpus.npy")
+    sample = torch.tensor(data[0])
+    sample= sample.view(1, 1, 216, 27)
+    indices = torch.argmax(sample, dim=3)
+    print(indices)
     # sample = sample.float()
-    # d = DiscriminatorV2(216, 27)
+    emb = nn.Embedding(27, 216)
+    out = emb(indices)
+    torch.matmul(out, sample)
+    # d = GeneratorV2(216, 27)
     # output = d(sample)
     # print(output.size())
