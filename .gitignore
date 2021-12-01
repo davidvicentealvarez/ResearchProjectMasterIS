@@ -12,3 +12,4 @@ GAN/clear_gen
 GAN/crypted_gen
 GAN/crypted_disc
 GAN/__pycache__/model.cpython-39.pyc
+GAN/wandb
