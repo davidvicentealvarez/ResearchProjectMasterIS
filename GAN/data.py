@@ -1,13 +1,14 @@
 import nltk
 from nltk.corpus import brown
 import numpy as np
+import torch
 
 charset = {" ": 0, "a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6, "g": 7, "h": 8, "i": 9,
            "j": 10, "k": 11, "l": 12, "m": 13, "n": 14, "o": 15, "p": 16, "q": 17, "r": 18, "s": 19,
            "t": 20, "u": 21, "v": 22, "w": 23, "x": 24, "y": 25, "z": 26}
 
 
-def convert_data(minimum_len=10, maximum_len=100, fixed_len=216, save=False):
+def convert_data(minimum_len=10, maximum_len=100, fixed_len=216, save=False, return_tensor=False):
     sentences = brown.sents()
     instances = []
     max_len = 0
@@ -31,6 +32,8 @@ def convert_data(minimum_len=10, maximum_len=100, fixed_len=216, save=False):
     print(data.shape, data.dtype)
     if save:
         np.save('brown_corpus.npy', data)
+    if return_tensor:
+        return torch.from_numpy(data)
     return data
 
 
@@ -51,7 +54,7 @@ def convert_word(word: str):
     return None
 
 
-def ceasar_shift(clear_text, key:int, save=False):
+def ceasar_shift(clear_text, key:int, save=False, return_tensor=False):
     limit = len(charset.keys())
     crypted_data = np.zeros(clear_text.shape, dtype=int)
     for i in range(len(clear_text)):
@@ -63,17 +66,22 @@ def ceasar_shift(clear_text, key:int, save=False):
     print(crypted_data.shape, crypted_data.dtype)
     if save:
         np.save('brown_corpus_ceasar_shift.npy', crypted_data)
+    if return_tensor:
+        return torch.from_numpy(data)
     return crypted_data
 
 
 
 
 if __name__ == "__main__":
-    data = convert_data(save=True)
+    data = convert_data(fixed_len=100, save=True)
     crypted_data = ceasar_shift(data,10, True)
-    print(data[0][-1])
-    print(data[1][-1])
-    print(data[2][-1])
-    print(data[3][-1])
+    decrypted_data =  ceasar_shift(crypted_data,-10)
+    data = data.reshape(-1)
+    decrypted_data = decrypted_data.reshape(-1)
+    sum_right = (decrypted_data == data).sum()
+    print(sum_right, len(data))
+    # print((result==result2).mean())
+
 
 
