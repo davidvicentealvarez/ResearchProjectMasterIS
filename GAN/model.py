@@ -100,7 +100,6 @@ class Discriminator(nn.Module):
         super().__init__()
         self.length = length
         self.dictionary_size = dictionary_size
-        self.embeding = nn.Linear(self.dictionary_size, self.length)
         self.encoder = nn.Sequential(
             nn.Linear(self.dictionary_size, self.length),
             nn.ReLU(),
