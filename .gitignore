@@ -13,3 +13,10 @@ GAN/crypted_gen
 GAN/crypted_disc
 GAN/__pycache__/model.cpython-39.pyc
 GAN/wandb
+GAN/checkpoint.pt
+GAN/checkpoint2.pt
+GAN/models/__pycache__/__init__.cpython-39.pyc
+GAN/models/__pycache__/cyphergan_models.cpython-39.pyc
+GAN/models/__pycache__/model.cpython-39.pyc
+GAN/models/__pycache__/modelV2.cpython-39.pyc
+GAN/models/__pycache__/ResNet.cpython-39.pyc
