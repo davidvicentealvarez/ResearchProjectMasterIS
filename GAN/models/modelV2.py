@@ -47,7 +47,7 @@ class GeneratorV2(nn.Module):
         )
         self.final_layer = nn.Softmax(dim=3)
 
-    def forward(self, X):
+    def forward(self, X, logits=True):
         # tensor_1d = self.reduction_layer(X).view(-1, 4, self.length)
         # new_rep = self.convultion_layer(tensor_1d).view(-1, 4, self.length, 1)
         # return self.deconv_layer(new_rep)
@@ -55,6 +55,8 @@ class GeneratorV2(nn.Module):
         tensor_1d = self.reduction_layer(X).view(-1, 4, self.length)
         new_rep = self.convultion_layer(tensor_1d).view(-1, 1, self.length *32)
         reconstruction = self.linear_layer(new_rep).view(-1, 1, self.length, self.dict_size)
+        if not logits:
+            reconstruction = self.final_layer(reconstruction)
         return reconstruction
 
 

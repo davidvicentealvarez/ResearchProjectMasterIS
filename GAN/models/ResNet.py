@@ -166,11 +166,14 @@ class ResNet(nn.Module):
         self.dict_size = dict_size
         self.encoder = ResNetEncoder(in_channels, *args, **kwargs)
         self.decoder = ResnetDecoder(self.encoder.blocks[-1].blocks[-1].expanded_channels, length*dict_size)
+        self.softmax = nn.Softmax(dim=3)
 
-    def forward(self, x):
+    def forward(self, x, logits=True):
         x = self.encoder(x)
-        x = self.decoder(x)
-        return x.view(-1, 1, self.length, self.dict_size)
+        x = self.decoder(x).view(-1, 1, self.length, self.dict_size)
+        if not logits:
+            x = self.softmax(x)
+        return x
 
 
 class ResNet1D(nn.Module):
