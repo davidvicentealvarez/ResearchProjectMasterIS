@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="heg-rl001.hesge.ch" id="61e4a9b4-1432-42c5-9373-eed3c4ad4198" port="10589" nameFormat="DESCRIPTIVE" username="david" />
+    </configs>
+  </component>
+</project>

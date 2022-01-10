@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="07eca08d-370e-49a6-9a7c-188b19a55c23" name="snowden">
+        <fileTransfer rootFolder="/home/david/python/research_project" accessType="SFTP" host="heg-rl001.hesge.ch" port="10589" sshConfigId="61e4a9b4-1432-42c5-9373-eed3c4ad4198" sshConfig="david@heg-rl001.hesge.ch:10589 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

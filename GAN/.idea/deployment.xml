@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="snowden" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="snowden">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/venv" />
+            <excludedPath local="true" path="$PROJECT_DIR$/wandb" />
+            <excludedPath local="true" path="$PROJECT_DIR$/checkpoint.pt" />
+            <excludedPath local="true" path="$PROJECT_DIR$/checkpoint2.pt" />
+            <excludedPath local="true" path="$PROJECT_DIR$/clear_discr" />
+            <excludedPath local="true" path="$PROJECT_DIR$/clear_gen" />
+            <excludedPath local="true" path="$PROJECT_DIR$/crypted_gen" />
+            <excludedPath local="true" path="$PROJECT_DIR$/crypted_disc" />
+            <excludedPath path="/wandb" />
+            <excludedPath path="/__pycache__" />
+            <excludedPath path="/venv" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
